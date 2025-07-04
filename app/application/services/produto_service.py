@@ -14,3 +14,6 @@ class ProdutoService:
         )
         self.repository.salvar(produto)
         return produto
+
+    def listar_produtos(self) -> list[Produto]:
+        return self.repository.listar_todos()

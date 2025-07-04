@@ -11,3 +11,7 @@ class ProdutoRepository(IProdutoRepository):
         model = ProdutoModel.from_entity(produto)
         self.session.add(model)
         self.session.commit()
+
+    def listar_todos(self) -> list[Produto]:
+        models = self.session.query(ProdutoModel).all()
+        return [model.to_entity() for model in models]
