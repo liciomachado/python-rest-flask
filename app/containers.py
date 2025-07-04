@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.config import Config
 
+from app.adapters.clients.car_function_client_impl import CarFunctionClient
 # User
 from app.adapters.repositories.user_repository_impl import UserRepository
 from app.application.services.user_service import UserService
@@ -22,6 +23,11 @@ class Container(containers.DeclarativeContainer):
     session_factory = providers.Singleton(sessionmaker, bind=engine)
     session = providers.Factory(lambda sf: sf(), session_factory)
 
+    car_function_client = providers.Singleton(
+        CarFunctionClient,
+        api_key=Config.CAR_FUNCTION_API_KEY
+    )
+
     # User flow
     user_repository = providers.Factory(UserRepository)
     user_service = providers.Factory(UserService, repository=user_repository)
@@ -29,5 +35,9 @@ class Container(containers.DeclarativeContainer):
 
     # Produto flow
     produto_repository = providers.Factory(ProdutoRepository, session=session)
-    produto_service = providers.Factory(ProdutoService, repository=produto_repository)
+    produto_service = providers.Factory(
+        ProdutoService,
+        repository=produto_repository,
+        car_function_client=car_function_client
+    )
     produto_blueprint = providers.Factory(create_produto_blueprint, produto_service=produto_service)

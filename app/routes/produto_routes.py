@@ -12,7 +12,7 @@ def create_produto_blueprint(produto_service: ProdutoService):
             nome=data["nome"],
             descricao=data.get("descricao", ""),
             valor=data["valor"],
-            quantidade_estoque=data["quantidade_estoque"]
+            quantidade_estoque=data["quantidade_estoque"],
         )
         return jsonify(ProdutoDTO.from_entity(produto).to_dict()), 201
 
