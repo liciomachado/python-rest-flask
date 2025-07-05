@@ -12,7 +12,8 @@ def create_app():
     container.init_resources()
     container.wire(modules=[
         "app.routes.user_routes",
-        "app.routes.produto_routes"
+        "app.routes.produto_routes",
+        "app.routes.decorators",
     ])
 
     # Criação de tabelas no banco de dados

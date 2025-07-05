@@ -53,6 +53,8 @@ class NotFoundError(AppError):
 class UnauthorizedError(AppError):
     """Erro 401"""
 
+class ForbiddenError(AppError):
+    """Erro 403"""
 
 class ConflictError(AppError):
     """Erro 409"""

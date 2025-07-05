@@ -15,6 +15,10 @@ from app.adapters.repositories.produto_repository_impl import ProdutoRepository
 from app.application.services.produto_service import ProdutoService
 from app.routes.produto_routes import create_produto_blueprint
 
+# API Key flow
+from app.adapters.repositories.api_client_repository_impl import ApiClientRepository
+from app.application.services.apikey_service import ApiKeyService
+
 class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(packages=["app.routes"])
 
@@ -33,6 +37,13 @@ class Container(containers.DeclarativeContainer):
     user_service = providers.Factory(UserService, repository=user_repository)
     user_blueprint = providers.Factory(create_user_blueprint, user_service=user_service)
 
+    # API Key flow
+    api_client_repository = providers.Factory(
+        ApiClientRepository,
+        session_factory=session_factory
+    )
+    api_key_service = providers.Factory(ApiKeyService,repository=api_client_repository)
+
     # Produto flow
     produto_repository = providers.Factory(ProdutoRepository, session=session)
     produto_service = providers.Factory(
@@ -40,4 +51,10 @@ class Container(containers.DeclarativeContainer):
         repository=produto_repository,
         car_function_client=car_function_client
     )
-    produto_blueprint = providers.Factory(create_produto_blueprint, produto_service=produto_service)
+    produto_blueprint = providers.Factory(
+        create_produto_blueprint, 
+        produto_service=produto_service, 
+        api_key_service=api_key_service
+    )
+
+  
