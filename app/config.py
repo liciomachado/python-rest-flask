@@ -16,3 +16,6 @@ class Config:
     DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1", "yes"]
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")
     CAR_FUNCTION_API_KEY = os.getenv("CAR_FUNCTION_API_KEY", "")
+    RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+    RABBITMQ_USER = os.getenv("RABBITMQ_USER", "guest")
+    RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "guest")

@@ -9,3 +9,13 @@ class Produto:
         self.descricao = descricao
         self.valor = valor
         self.quantidade_estoque = quantidade_estoque
+
+    def to_dict(self) -> dict:
+        return {
+            "id": str(self.id),
+            "data_criacao": self.data_criacao.isoformat(),
+            "nome": self.nome,
+            "descricao": self.descricao,
+            "valor": self.valor,
+            "quantidade_estoque": self.quantidade_estoque
+        }

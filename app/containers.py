@@ -1,3 +1,4 @@
+from app.adapters.event_bus.rabbitmq_event_bus import RabbitMQEventBus
 from dependency_injector import containers, providers
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -32,6 +33,13 @@ class Container(containers.DeclarativeContainer):
         api_key=Config.CAR_FUNCTION_API_KEY
     )
 
+    event_bus = providers.Singleton(
+        RabbitMQEventBus,
+        host=Config.RABBITMQ_HOST,
+        username=Config.RABBITMQ_USER,
+        password=Config.RABBITMQ_PASSWORD
+    )
+
     # User flow
     user_repository = providers.Factory(UserRepository)
     user_service = providers.Factory(UserService, repository=user_repository)
@@ -49,7 +57,8 @@ class Container(containers.DeclarativeContainer):
     produto_service = providers.Factory(
         ProdutoService,
         repository=produto_repository,
-        car_function_client=car_function_client
+        car_function_client=car_function_client,
+        event_bus=event_bus
     )
     produto_blueprint = providers.Factory(
         create_produto_blueprint, 

@@ -25,6 +25,8 @@ markupsafe==3.0.2
     #   flask
     #   jinja2
     #   werkzeug
+pika==1.3.2
+    # via python-rest-flask (pyproject.toml)
 psycopg2-binary==2.9.10
     # via python-rest-flask (pyproject.toml)
 python-dotenv==1.1.1
