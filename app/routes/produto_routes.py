@@ -12,6 +12,38 @@ def create_produto_blueprint(produto_service: ProdutoService, api_key_service: A
     @bp.route("/", methods=["POST"])
     @api_key_required(api_key_service)
     def salvar_produto():
+        """
+        Cria um novo produto
+        ---
+        tags:
+          - Produtos
+        parameters:
+          - in: body
+            name: body
+            required: true
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                descricao:
+                  type: string
+                valor:
+                  type: number
+                quantidade_estoque:
+                  type: integer
+                codigo_car:
+                  type: string
+        responses:
+          201:
+            description: Produto criado com sucesso
+            schema:
+              $ref: '#/definitions/Produto'
+          400:
+            description: Erro de validação
+        security:
+          - ApiKeyAuth: []
+        """
         data = request.get_json()
         result = produto_service.salvar_produto(
             nome=data["nome"],
@@ -29,6 +61,19 @@ def create_produto_blueprint(produto_service: ProdutoService, api_key_service: A
         
     @bp.route("/", methods=["GET"])
     def listar_produtos():
+        """
+        Lista todos os produtos
+        ---
+        tags:
+          - Produtos
+        responses:
+          200:
+            description: Lista de produtos
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Produto'
+        """
         produtos = produto_service.listar_produtos()
         return jsonify([
             ProdutoDTO.from_entity(produto).to_dict()

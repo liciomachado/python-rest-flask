@@ -1,7 +1,9 @@
 from flask import Flask
+from flasgger import Swagger
 from app.config import Config
 from app.containers import Container
 from app.adapters.repositories.sqlalchemy_models import Base
+from app.swagger_template import swagger_template
 
 def create_app():
     app = Flask(__name__)
@@ -26,5 +28,7 @@ def create_app():
 
     app.register_blueprint(user_bp, url_prefix="/users")
     app.register_blueprint(produto_bp, url_prefix="/produtos")
+
+    Swagger(app, template=swagger_template)
 
     return app
